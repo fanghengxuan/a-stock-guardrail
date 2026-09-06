@@ -5,8 +5,8 @@
 整节缺 → {status:"una"}（前端删面板）；跨节块一级缺 → 二级回退链 → 子项删行
 {status:"partial"}。永不空屏、永不造数。
 
-字段映射合同 = decision-card-dashboard SKILL.md「字段映射」表；
-视觉与颜色语义由前端 dashboard.css 承载，本模块只产数据。
+字段口径与《执行手册》输出模板一致；视觉与颜色语义由前端样式承载
+（styles/memo.css），本模块只产数据。
 """
 from __future__ import annotations
 
@@ -325,7 +325,7 @@ def _ex_stamp(sections):
     m = re.search(r"状态机输出[：:]\s*([A-Za-z]+)(?:（([^）]*)）)?", row)
     if not m:
         m = re.search(r"状态[：:]\s*([A-Za-z]+)", row)
-    if not m:  # 26 节新形态：「状态机输出结论：」独立成行，状态名在下条 bullet
+    if not m:  # 「状态机输出结论：」独立成行，状态名在下条 bullet
         m = re.search(r"状态[：:]\s*\*{0,2}([A-Za-z]+)(?:（([^）]*)）)?", txt)
     if not m:  # 表格行形态（600941）：| **状态** | **Watch（偏Range）** |
         for ln in txt.splitlines():
@@ -342,7 +342,7 @@ def _ex_stamp(sections):
     cap = clean_num(mm.group(1)) if mm else None
     mm = re.search(r"置信度[：:为]?\s*\*{0,2}(极低|[高中低])", txt)
     conf = mm.group(1) if mm else None
-    if cap is None or conf is None:  # 三级：卡 🎯 状态块（v3 实跑样本置信度只在卡内）
+    if cap is None or conf is None:  # 三级：卡 🎯 状态块（该形态置信度只在卡内）
         for ln in card_blocks(_sec(sections, "l3_card")).get("state", []):
             if cap is None:
                 mm = re.search(r"仓位上限[^\d]*(\d+(?:\.\d+)?)\s*%", ln)
@@ -420,21 +420,21 @@ def _ex_debate(sections):
                                     {"name": mm.group(1) + "派", "weight_pct": int(mm.group(3)),
                                      "stance": None, "score": None})
             f["score"] = float(mm.group(2))
-        # 第三形态（无逐项×权重）：「价值派75分、成长派70分…→ 加权=…」（2026-09-06 实跑样本）
+        # 无逐项×权重形态：「价值派75分、成长派70分…→ 加权=…」
         # 前缀限汉字，防顿号/引号被 \S 吞入键名
         for mm in re.finditer(r"([一-龥]{1,2})派\s*(\d+(?:\.\d+)?)分(?!\s*×)", s):
             f = factions.setdefault(mm.group(1),
                                     {"name": mm.group(1) + "派", "weight_pct": None,
                                      "stance": None, "score": None})
             f["score"] = float(mm.group(2))
-        # 第四形态（裸名简写）：「计算：价值45×28% + 成长55×25%…」（600089 实跑形态）
+        # 裸名简写形态：「计算：价值45×28% + 成长55×25%…」（600089）
         # 名单锁死五派，防误吞其它数字表达式
         for mm in re.finditer(r"(价值|成长|质量|资金|情绪)\s*(\d+(?:\.\d+)?)\s*×\s*(\d+)\s*%", s):
             f = factions.setdefault(mm.group(1),
                                     {"name": mm.group(1) + "派", "weight_pct": int(mm.group(3)),
                                      "stance": None, "score": None})
             f["score"] = float(mm.group(2))
-        # 第五形态（综合裁定映射行）：「价值派+2→60、成长派-1→45…」（26 节新格式，002236）
+        # 综合裁定映射行形态：「价值派+2→60、成长派-1→45…」（002236）
         # 分数写在裁定行，取 → 后的 0-100 映射值；只覆盖 score 为 None 的派，不覆盖逐项分。
         for mm in re.finditer(r"(价值|成长|质量|资金|情绪)派\s*[+-]?\s*\d+(?:\.\d+)?\s*→\s*(\d+(?:\.\d+)?)", s):
             f = factions.setdefault(mm.group(1),
@@ -468,7 +468,7 @@ def _ex_debate(sections):
     out = {"factions": rows, "composite": comp_s,
            "composite_text": (f"{comp_s}/100" if comp_s is not None else None),
            "verdict": verdict, "consensus": consensus, "divergence": divergence}
-    if no_scores:  # 定性版辩论（600089 实跑形态：五派无逐派分值）——非解析降级，条形渲染 0/—
+    if no_scores:  # 定性版辩论（600089：五派无逐派分值）——非解析降级，条形渲染 0/—
         out["qualitative"] = True
     return out
 
@@ -691,7 +691,7 @@ def _ex_quant(sections):
     if concl is None:
         concl = next((strip_bold(ln) for ln in txt.splitlines()
                       if re.match(r"^综合结论[：:]", ln.strip())), None)
-    # ── 新版四法联动：主法选择 + 各法结论行（旧版 2 法报告自然为空）──
+    # ── 四法联动：主法选择 + 各法结论行（报告无四法明细时为空）──
     # 实证双形态：「主法：X」行内式 与 选择表「| 主法 | **X**（注） |」表格式
     sel = next((v for k, v in subs.items() if "方法选择" in k), "")
     pm_txt = None
@@ -1059,7 +1059,7 @@ def _ex_appendix(sections):
     return {"items": items} if items else None
 
 
-# ---------- 新版手册模块提取器（旧版 20 节报告缺节 → 块 una，前端删面板） ----------
+# ---------- 手册模块提取器（报告缺节 → 块 una，前端删面板） ----------
 
 def _first_table(txt: str) -> dict | None:
     return (md_tables(txt) or [None])[0]

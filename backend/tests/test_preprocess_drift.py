@@ -1,6 +1,6 @@
 # backend/tests/test_preprocess_drift.py
-"""_preprocess_json 容错扩展的判别测试——样本取自 2026-09-05 18:5x 真实端点产出
-（fallback 路径 8 项校验错的原始 JSON 形态）。回归守卫：漂移被修复且语义信息不丢。"""
+"""_preprocess_json 容错扩展的判别测试——样本取自真实端点 fallback 路径 8 项
+校验错的原始 JSON 形态。回归守卫：异常形态被正确修复且语义信息不丢。"""
 from orchestrator import _preprocess_json
 from schemas import StockDecisionCard
 

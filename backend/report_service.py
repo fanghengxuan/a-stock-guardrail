@@ -174,8 +174,7 @@ def list_reports() -> list[dict]:
 def load_dashboard(code: str) -> dict | None:
     """按 6 位代码取最新看板 JSON 全文；无 → None。
 
-    兼容迁移（2026-09-06）：旧 parser 固化的 dashboard.json 缺新版手册 8 块
-    （chips/position/peer/deviation/pq/health/veto/guide）——若这些块全缺/una 而
+    dashboard.json 若缺 8 块（chips/position/peer/deviation/pq/health/veto/guide）而
     report_direct.md 在，用当前 parser 现场重算补齐并落盘，前端历史详情即能显示明细。"""
     if not re.match(r"^\d{6}$", code) or not REPORTS_ROOT.is_dir():
         return None
@@ -193,7 +192,7 @@ def load_dashboard(code: str) -> dict | None:
         dash = json.loads(dj.read_text(encoding="utf-8"))
     except (json.JSONDecodeError, OSError):
         return None
-    # 旧固化缺失新版块 → 由原文重算（仅当 md 存在且解析能补齐非 una 块）
+    # 缺块 → 由原文重算（仅当 md 存在且解析能补齐非 una 块）
     blocks = dash.get("blocks", {})
     new_keys = ("chips", "position", "peer", "deviation", "pq", "health", "veto", "guide")
     missing = [k for k in new_keys

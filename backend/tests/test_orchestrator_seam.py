@@ -1,6 +1,6 @@
 # backend/tests/test_orchestrator_seam.py
-"""T7 接线契约（终审重建；2026-09-05 更新：减载单份 + 卡片调用改流式）：run_analysis 必须
-①把阶段2下钻数据单份注入独立段（raw_json 不再内嵌 drilldown 重复份——减载）；
+"""T7 接线契约：run_analysis 必须
+①把阶段2下钻数据单份注入独立段（raw_json 不内嵌 drilldown 重复份——减载）；
 ②走 output_type 主路径（run_streamed 流式消费后取 final_output），端点失败才降级 fallback 容错解析；
 ③合并后的 raw（含 drilldown）仍流入 _backfill_data_trace。
 全部 LLM/网络/报告副作用打桩，不触真实文件、不发真实请求。"""

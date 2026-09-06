@@ -238,8 +238,8 @@ def test_degrade_broken_table_raw_fallback():
 
 
 def test_v3_debate_and_stamp_variants():
-    """2026-09-06 实跑第三变体：辩论无×权重形态「价值派75分、成长派70分…」、
-    置信度只在卡 🎯 块——两个真实漂移都必须自动消化，且零降级。"""
+    """辩论无×权重形态「价值派75分、成长派70分…」、置信度只在卡 🎯 块——
+    两种报告形态都必须自动消化，且零降级。"""
     md = (FIX / "600036v3-report_direct.md").read_text(encoding="utf-8")
     d = build_dashboard(md)
     assert d["parse_fallbacks"] == []
@@ -253,8 +253,8 @@ def test_v3_debate_and_stamp_variants():
 
 
 def test_v4_bare_name_debate():
-    """2026-09-06 用户实跑 600089：辩论四种漂移叠加——「（权重 28%）」带空格、
-    结论独立行、逐派分值只出现在「计算：价值45×28% + 成长55×25%…」裸名简写行。
+    """600089 辩论四形态叠加——「（权重 28%）」带空格、结论独立行、
+    逐派分值只出现在「计算：价值45×28% + 成长55×25%…」裸名简写行。
     五派分值/权重/立场/综合 47.9 必须全部解析出。"""
     md = (FIX / "600089-report_direct.md").read_text(encoding="utf-8")
     d = build_dashboard(md)
@@ -338,7 +338,7 @@ def test_fenced_prefix_tolerated():
     assert b["quote"]["price"] == 58.24
 
 
-# ---------- 新版手册 26 节格式（002236 实跑 2026-09-06）：新块 golden ----------
+# ---------- 26 节手册格式（002236）：新块 golden ----------
 
 @pytest.fixture(scope="module")
 def b26():

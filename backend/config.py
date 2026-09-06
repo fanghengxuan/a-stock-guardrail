@@ -23,8 +23,7 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL", "")
 LLM_MODEL = os.getenv("LLM_MODEL", "deepseek-v4-flash")
 
-# 必须显式配置端点：旧默认值（恒生 lightcode，已废弃）正是 2026-09-05 排障误判的根源，
-# 缺失时宁可在启动即报错，也不静默回退到错误端点。
+# 端点必须显式配置（无默认值）：缺失时宁可在启动即报错，也不静默回退到错误端点。
 if not OPENAI_BASE_URL:
     raise RuntimeError(
         "OPENAI_BASE_URL 未设置：请在 backend/.env 配置 OpenAI 兼容端点（无默认值）。")
@@ -33,9 +32,9 @@ if not OPENAI_BASE_URL:
 LLM_API_MODE = os.getenv("LLM_API_MODE", "responses")  # responses（默认）| chat_completions（应急回滚）
 assert LLM_API_MODE in ("chat_completions", "responses")
 
-# 深度思考开关（默认关闭）。DeepSeek v4 默认开思考：报告直写前 3-5 分钟仅产思维链 token、
-# 正文零字节——前端实时渲染像假死，240s 静默熔断还可能误杀活流（2026-09-06 实跑事故）。
-# 关闭 → reasoning.effort=none（官方支持，实测 0 思维链 token、秒级出字、逐节点亮）；
+# 深度思考开关（默认关闭）。DeepSeek v4 默认开思考：报告直写前仅产思维链 token、
+# 正文零字节，前端实时渲染会长时间无输出，静默熔断还可能误杀活流。
+# 关闭 → reasoning.effort=none（无思维链 token、秒级出字、逐节点亮）；
 # 开启 → reasoning.effort=high（深度思考，更缜密但慢，需配大 max_tokens）。
 # 参考：https://api-docs.deepseek.com/zh-cn/api/create-response（effort ∈ none/minimal/low/medium/high/xhigh/max）
 LLM_DEEP_THINK = os.getenv("LLM_DEEP_THINK", "false").strip().lower() in ("1", "true", "yes", "on")
@@ -50,11 +49,10 @@ LLM_MAX_TOKENS = 65536 if LLM_DEEP_THINK else 32768
 _client = AsyncOpenAI(
     base_url=OPENAI_BASE_URL,
     api_key=OPENAI_API_KEY or "missing-api-key",
-    # 预算收紧（2026-09-05 端点劣化实测）：默认 600s 会让单次挂起吃满 SSE 分析窗口（main.py 300s），
-    # 降级 fallback 永远轮不到。200s=健康慢窗实测值（大请求非流式 181s 回包）上浮余量；
-    # 真挂起（>200s 无响应）仍会按时转入 fallback。长期解=卡片调用改流式（实测快 1.7×，二期）。
+    # 客户端超时 200s：超过会让单次挂起吃满 SSE 分析窗口、fallback 轮不到；
+    # 真挂起（>200s 无响应）按时转入 fallback。
     timeout=200.0,
-    max_retries=1,  # 网关瞬时 RST 风暴（今日观察到）时快速重试即可，SDK 默认 2 次白耗窗口
+    max_retries=1,  # 网关瞬时 RST 时快速重试即可，SDK 默认 2 次白耗窗口
 )
 set_default_openai_client(client=_client, use_for_tracing=False)  # 自定义 client 不用于 tracing
 set_default_openai_api(LLM_API_MODE)

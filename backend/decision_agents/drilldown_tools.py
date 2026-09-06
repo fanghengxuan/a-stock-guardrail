@@ -340,8 +340,8 @@ class NewsFetcher(BaseFetcher):
         return result
 
 
-# push2 主站/编号子域 2026-09-05 实测对本机 IP 间歇 RST（探测突发后被 WAF 拦），
-# push2delay 同 API 同 JSON 结构可通（行情延迟约15min，日级决策不受影响）。被封解除可切回 push2。
+# push2 主站/编号子域对本机 IP 会间歇 RST（WAF 拦截），push2delay 同 API 同 JSON 结构可通
+# （行情延迟约 15min，日级决策不受影响）。当前默认走 push2delay。
 _PUSH2 = "https://push2delay.eastmoney.com"
 
 

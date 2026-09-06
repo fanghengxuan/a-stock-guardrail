@@ -66,7 +66,7 @@ def test_stream_events(patched):
     assert names[0] == "connected"
     assert "section_done" in names and names[-1] == "done"
     assert set(names) >= {"phase", "report_saved"}
-    # 思考摘录条按用户拍板恢复（2026-09-06 二次决策，替代静默期观感）
+    # thought 事件：实时输出当前写作节标题 + 尾部未完结小句
     th = [d for e, d in events if e == "thought"]
     assert th and th[0]["title"] == "一、行情数据" and "PE" in th[0]["tail"] and "md_bytes" in th[0]
     sds = [d for e, d in events if e == "section_done"]
@@ -110,8 +110,8 @@ def test_stream_duplicate_guard(monkeypatch, patched):
 
 
 def test_stall_breaker_survives_slow_section(monkeypatch, patched):
-    """单节写作超 STALL 窗但 token 流未断（stats.md_bytes 持续增长）→ 不得误杀。
-    （2026-09-06 002415 实跑误杀事故回归：判据从队列事件改为真实字节。）"""
+    """单节写作超 STALL 窗但 token 流未断（stats.md_bytes 持续增长）→ 不得误杀；
+    静默判据用真实字节数，不用队列事件。"""
     monkeypatch.setattr("orchestrator.resolve_stock_query", _fake_resolve)
     monkeypatch.setattr(report_service, "HEARTBEAT", 0.05)
     monkeypatch.setattr(report_service, "STALL_TIMEOUT", 0.3)

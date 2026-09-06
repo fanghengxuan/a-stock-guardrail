@@ -3,8 +3,7 @@
 POST /api/analyze：接受 {stock_code: str}，调用 orchestrator 编排 L1→L2→L3，返回 StockDecisionCard。
 
 自定义 OpenAI 兼容端点与 API 模式配置统一收敛在 config.py（import 即触发全局
-set_default_openai_*，含 LLM_API_MODE 开关）。原先在此内联的一份是幂等双写，已删除，
-只保留对 config 的 import——端点/模式单一真相源在 config.py。
+set_default_openai_*，含 LLM_API_MODE 开关）。端点/模式单一真相源在 config.py。
 
 启动：
   cp .env.example .env  # 填入真实 key
@@ -171,8 +170,8 @@ async def _analyze_stream_gen(stock_code: str, force_refresh: bool = False):
     try:
         while not task.done():
             elapsed = _time.time() - start
-            if elapsed > 480:  # 300→480：2026-09-05 网关高峰大请求实测 44s→181s→挂死递变，
-                task.cancel()  # 给流式+fallback 各留一个完整尝试窗口；低峰回落后不会触顶
+            if elapsed > 480:  # 总窗 480s：给流式与 fallback 各留完整尝试窗口（网关高峰大请求会积压）
+                task.cancel()
                 yield _sse("error", {"message": f"分析超时（480s，elapsed={elapsed:.0f}s）"})
                 return
             yield _sse("heartbeat", {"ts": _time.time(), "elapsed": int(elapsed)})
@@ -225,7 +224,7 @@ async def analyze_stream(stock_code: str):
 
 @app.post("/api/analyze/stream")
 async def analyze_stream_post(req: AnalyzeRequest):
-    """SSE 流式（POST，fetch ReadableStream，JSON body {stock_code}）。GET 版本保留兼容。
+    """SSE 流式（POST，fetch ReadableStream，JSON body {stock_code}）；GET 亦提供同语义接口。
 
     SSE 事件格式（与 GET 一致）：
       event: connected

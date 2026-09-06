@@ -1,4 +1,4 @@
-"""L1 数据获取层 — 完整重构版（多源策略模式 + 交叉验证）
+"""L1 数据获取层（多源策略模式 + 交叉验证）
 
 深度借鉴 ZhuLinsen/daily_stock_analysis data_provider（⭐58k）+ simonlin1212/a-stock-data SKILL.md（⭐7.4k）：
 - BaseFetcher(ABC) 策略模式基类 + priority 多源 fallback（朱林森 DataFetcherManager）

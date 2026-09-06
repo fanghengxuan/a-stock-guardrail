@@ -132,7 +132,7 @@ def _preprocess_json(data: dict) -> dict:
                     obj[k] = [v]
                 if k == "fcf_history" and isinstance(v, dict):
                     obj[k] = [] if set(v) <= {"note", "reason", "comment", "detail", "summary"} else [v]
-                # Literal 兜底（2026-09-05 网关实测）：枚举字段值是纯说明文本、不含任何合法值
+                # Literal 兜底：枚举字段值是纯说明文本、不含任何合法值
                 # → 收敛到安全默认，原文转入 summary 保信息（northbound 有 UNA 合法值优先用之）
                 if k in ("main_force", "institution", "northbound") and isinstance(v, str) and v not in _literal_clean[k]:
                     guess = next((vv for vv in _literal_clean[k] if vv in v), None)
@@ -450,8 +450,7 @@ async def run_analysis(stock_code: str, force_refresh: bool = False) -> StockDec
     from decision_agents.drilldown import run_drilldown
     extra, trace_path = await run_drilldown(resolved_code, resolved_name, raw, force_refresh)
     raw = {**raw, "drilldown": extra}                                      # 合并供 backfill/report
-    # 减载旋钮（2026-09-05 用户批准）：raw_json 不内嵌 drilldown 重复份，下钻数据单份注入独立段。
-    # T7 复审已验证消费侧安全；总量约减半，缓解端点弱输出/超时。恢复双份=此处改回 dumps(raw)。
+    # raw_json 不内嵌 drilldown 重复份，下钻数据单份注入独立段（总量减半，缓解端点弱输出/超时）。
     raw_json = json.dumps({k: v for k, v in raw.items() if k != "drilldown"},
                           ensure_ascii=False, indent=2, default=str)
     name_hint = f"（{resolved_name}）" if resolved_name else ""
@@ -545,8 +544,8 @@ async def run_analysis(stock_code: str, force_refresh: bool = False) -> StockDec
     )
     # 主路径：output_type=StockDecisionCard（LLM 通过 response_format 产出 JSON）
     # 如 Hundsun 端点不支持 json_schema，降级 output_type=None + 容错解析。
-    # 流式调用（2026-09-05 网关劣化实测）：非流式大请求被网关积压（44s→181s→挂死），
-    # SSE 流式有持续字节流、同窗口 107s 完整回包。消费全部事件后取 final_output，
+    # 流式调用：非流式大请求会被网关积压直至挂死，SSE 流式有持续字节流可完整回包；
+    # 消费全部事件后取 final_output，
     # 对下游仍是"整卡返回"，前端逐区块 SSE 推送节奏不变（阶段3）。
     try:
         result = Runner.run_streamed(orchestrator, prompt)

@@ -33,7 +33,7 @@ DIRECT_RULES = (
 #   关 → reasoning.effort=none：无思维链，出字即时、逐节点亮（实时渲染友好）；
 #   开 → reasoning.effort=high：深度推理（更缜密但慢）。
 # ModelSettings 字段是 reasoning（dict）与 max_tokens（映射到 API 的 max_output_tokens）；
-# 传 max_output_tokens=… 会被 pydantic 静默忽略（2026-09-06 实测教训）。
+# 传 max_output_tokens=… 会被 pydantic 静默忽略，须用 ModelSettings.max_tokens。
 def _build_direct_agent(deep: bool):
     return Agent(name="report_direct", model=LLM_MODEL,
                  instructions=report_writer.instructions + DIRECT_RULES,
