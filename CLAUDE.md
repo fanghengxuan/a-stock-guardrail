@@ -19,7 +19,6 @@ FastAPI + openai-agents（Responses API）+ deepseek-v4-flash；akshare/东财/�
 - 决策卡 JSON 管线（orchestrator / `/api/analyze*` / schemas）与报告直出看板管线各自独立，**不得混改**。
 - 前端颜色语义（印泥红/台账绿/琥珀/红涨绿跌）与设计 token 不得改动；不引入 recharts/radix/shadcn 等重型库。
 - SSE 端点超时口径：总窗 480s、静默熔断 240s、心跳 15s；同标的进程内去重。
-- 设计档案在 `docs/superpowers/`（plans/specs），非现役，勿按其施工。
 
 ## 行为边界
 - 一次分析绑一条 SSE：整页刷新/关页会中断该次分析（无作业队列）；同标的并发提交会被去重拒绝。

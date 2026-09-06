@@ -100,7 +100,6 @@ cd frontend && npx vitest run
 │   │   └── types/memo.ts           # 看板类型契约
 │   ├── public/favicon.svg
 │   └── package.json 等
-├── docs/superpowers/               # 设计档案(plans / specs)
 ├── start.sh / start.command        # 一键启动
 └── README.md / LICENSE / .gitignore
 ```
