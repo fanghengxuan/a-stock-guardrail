@@ -1,0 +1,47 @@
+# Dependencies
+node_modules/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Build
+dist/
+build/
+*.egg-info/
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Claude Code 本地配置
+.claude/
+
+# Python
+*.egg
+*.log
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Frontend
+*.tsbuildinfo
+analysis_reports/
+
+# Brainstorm / visual companion artifacts
+.superpowers/
+eastmoney_cookie.txt
+
+# 运行态：路由有效性台账（一期验收窗口快照已存档于 4d2449f，活文件不再跟踪）
+backend/data_routes_state.json

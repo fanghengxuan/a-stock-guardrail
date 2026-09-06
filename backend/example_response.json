@@ -1,0 +1,252 @@
+{
+  "header": {
+    "stock_name": "招商银行",
+    "stock_code": "600036",
+    "analysis_date": "2026-07-19"
+  },
+  "data_trace": {
+    "source_summary": {
+      "main_source_success": 8,
+      "backup_source_downgrade": 3,
+      "una_count": 8,
+      "completeness": "部分缺失",
+      "credibility": "中"
+    },
+    "quote": {
+      "latest_price": 38.02,
+      "change_pct": 0.93,
+      "pe_ttm": 6.36,
+      "pb": 0.87,
+      "dividend_yield": 5.3
+    },
+    "derived": {
+      "pe_pct_5y": null,
+      "pe_pct_10y": null,
+      "pb_pct_5y": null,
+      "industry_pe_median_5y": null,
+      "fcf": null,
+      "fcf_caliber": "首选"
+    },
+    "fcf_history": [
+      {
+        "year": "2024",
+        "ocf": 17.72,
+        "capex": null,
+        "fcf": null
+      },
+      {
+        "year": "2025",
+        "ocf": 17.9,
+        "capex": null,
+        "fcf": null
+      }
+    ],
+    "industry_specific": {
+      "npl_ratio": null,
+      "coverage_ratio": null,
+      "tier1_capital": null,
+      "nim": null,
+      "nim_trend": null
+    },
+    "employee_holding": {
+      "avg_price": null,
+      "premium_discount": null
+    },
+    "position_tracking": {
+      "cost": null,
+      "quantity": null,
+      "first_entry_date": null,
+      "stop_loss_price": null
+    }
+  },
+  "hard_gate": {
+    "passed": true,
+    "applied_model": "模型四",
+    "key_values": {
+      "pe": 6.36,
+      "pb": 0.87,
+      "dividend_yield": 5.3,
+      "roe_avg_3y": 14.72,
+      "roe_latest": 13.44,
+      "ocf_to_np_avg_3y": null,
+      "debt_ratio": null,
+      "npl_ratio": null,
+      "coverage_ratio": null
+    },
+    "quality_regulator_triggered": false,
+    "alt_pool_triggered": false,
+    "reason": "模型四（银行/保险）：PE=6.36≤10倍 ✅。不良率、拨备覆盖率、NIM趋势均UNA，无法完全验证，但PE核心条件满足。银行板块经系统充分验证，适用性良好。"
+  },
+  "reverse_check": {
+    "passed": true,
+    "items": [
+      {
+        "name": "大股东质押率",
+        "triggered": false,
+        "detail": "大股东质押率>50%：UNA，未触发"
+      },
+      {
+        "name": "ESG负面事件",
+        "triggered": false,
+        "detail": "ESG负面事件：UNA，未触发"
+      },
+      {
+        "name": "审计意见非标准",
+        "triggered": false,
+        "detail": "审计意见：国有大行标准无保留意见（假设），未触发"
+      },
+      {
+        "name": "近两年累计净利润为负",
+        "triggered": false,
+        "detail": "近两年累计净利润：2024年1483.91亿，2025年1501.81亿，均为正，未触发"
+      },
+      {
+        "name": "分红率>100%",
+        "triggered": false,
+        "detail": "分红率：约35%，<100%，未触发"
+      }
+    ],
+    "confidence_downgrades": 0
+  },
+  "five_signals": {
+    "trend": "FLAT",
+    "flow": "NEU",
+    "value": "LOW",
+    "quality": "CAU",
+    "sentiment_score": 0.0,
+    "details": "趋势（Trend）：数据不足，默认FLAT。资金（Flow）：单日主力净流出，数据不足，判定NEUTRAL。估值（Value）：PE=6.36倍（历史低位），PB=0.87倍（破净），股息率5.3%（高），判定LOW。质量（Quality）：净利润连续三年正增长但增速趋零（+6.22%→+1.22%→+1.21%），ROE连续三年下降（16.22%→14.49%→13.44%），经营现金流强劲（17.9元/股vs EPS 5.7元），判定CAUTION。情绪（Sentiment）：数据不可得，0分。"
+  },
+  "value_trap": {
+    "triggered": true,
+    "signals": [
+      {
+        "name": "ROE连续三年下降",
+        "triggered": true,
+        "position_cap": 5.0
+      }
+    ],
+    "position_cap": 5.0
+  },
+  "quant_enhance": {
+    "dcf_executed": false,
+    "dcf_value": null,
+    "note": "DCF估值：跳过（银行股DCF需大量假设，数据不足）。5日VaR：缺少日频波动率数据，无法计算。银行股的核心价值锚点为PB和股息率，而非DCF。\n📌 当前PB=0.87倍，历史PB均值约1.2-1.5倍，以PB-ROE框架估算合理价值约1.0-1.1倍PB（对应43-48元），当前价折价约15-20%。"
+  },
+  "debate": {
+    "factions": [
+      {
+        "name": "价值派",
+        "score": 8.0,
+        "weight": 28.0,
+        "stance": "多"
+      },
+      {
+        "name": "成长派",
+        "score": -6.0,
+        "weight": 25.0,
+        "stance": "空"
+      },
+      {
+        "name": "质量派",
+        "score": 1.0,
+        "weight": 22.0,
+        "stance": "多"
+      },
+      {
+        "name": "资金派",
+        "score": -1.0,
+        "weight": 15.0,
+        "stance": "空"
+      },
+      {
+        "name": "情绪派",
+        "score": 0.0,
+        "weight": 10.0,
+        "stance": "中"
+      }
+    ],
+    "composite_score": 54.05,
+    "consensus": "分歧",
+    "winner": "多头",
+    "defense_mode": false,
+    "summary": "价值派强烈看多（PE=6.36倍，PB=0.87倍破净，股息率5.3%），成长派看空（净利润增速仅1.2%，营收零增长），质量派谨慎偏多（现金流强劲但ROE趋势向下），资金派轻微看空（单日主力小幅流出），情绪派数据不可得。价值派与成长派存在明显分歧，价值派略占优势。"
+  },
+  "factor_validation": {
+    "trend_valid": false,
+    "flow_valid": false,
+    "value_valid": true,
+    "quality_valid": true,
+    "sentiment_valid": false,
+    "invalid_factors": [
+      "flow",
+      "sentiment",
+      "trend"
+    ],
+    "note": "趋势（Trend）：缺少日线/周线数据，无法判定 → 默认FLAT，标记invalid。资金（Flow）：仅有一日资金流向数据，完整性不足 → 标记invalid。情绪（Sentiment）：数据不可得 → 标记invalid。估值（Value）：PE/PB/股息率数据完整，分位数据UNA但绝对值可判定 → valid。质量（Quality）：财务数据完整可判定 → valid。"
+  },
+  "capital_profile": {
+    "main_force": "净流出",
+    "institution": null,
+    "northbound": null,
+    "margin": null,
+    "summary": "单日（2026-07-17）主力资金净流出约6671万元，但数据仅覆盖最后一分钟，完整性不足，无法形成有效趋势判断。机构、北向、融资资金均UNA。合力画像：NEUTRAL（数据不足）"
+  },
+  "stress_test": {
+    "base_valuation": 37.05,
+    "pessimistic_valuation": 30.78,
+    "dcf_valuation_range": null,
+    "scenario": "基准情景：EPS=5.70元×PE=6.5倍（行业均值）=37.05元。悲观情景：假设净利润下降10%（经济下行信用成本上升），EPS=5.13元×PE=6.0倍（ROE下降估值折价）=30.78元。下行风险：(38.02-30.78)/38.02=19.0%。",
+    "downside_risk": 19.0,
+    "var_5d": null,
+    "extreme_volatility": false,
+    "note": "极端波动声明：全市场波动率数据无法获取，暂不触发。"
+  },
+  "behavior_check": {
+    "has_warning": true,
+    "triggered_items": [
+      "⚠️ 建议重新审视：行业周期性风险——银行属于强周期行业，经济下行周期中不良贷款率和信用成本可能上升，需确保悲观情景充分覆盖尾部风险"
+    ]
+  },
+  "final_decision": {
+    "state": "Watch",
+    "action": "持有观察/不加仓",
+    "position_cap": 5.0,
+    "confidence": "中",
+    "stop_profit_check": "当前PE=6.36倍，未触发任何止盈条件（PE≥12倍且股息率≤3%尚未满足）"
+  },
+  "anchors": {
+    "entry_anchors": [
+      {
+        "level": "锚点1（基准情景）",
+        "price": 37.05,
+        "position": 37.05
+      },
+      {
+        "level": "锚点2（基准与悲观之间）",
+        "price": 33.9,
+        "position": 33.9
+      },
+      {
+        "level": "锚点3（悲观情景）",
+        "price": 30.78,
+        "position": 30.78
+      }
+    ],
+    "stop_loss_line": 30.78,
+    "pessimistic_correction_anchor": 30.78
+  },
+  "exit_conditions": [
+    "1. ROE继续下降至12%以下（连续两年下降超1个百分点）",
+    "2. 不良贷款率突破2%（需关注银行财报披露）",
+    "3. PE升至12倍以上且股息率降至3%以下（止盈条件）",
+    "4. PB升至1.2倍以上（仓位上限减至2/3）",
+    "5. 股价较建仓均价上涨≥100%且估值进入HIGH区间（减持2/3）"
+  ],
+  "risks": [
+    "⚠️ ROE连续三年下降（16.22%→14.49%→13.44%），盈利质量趋势恶化，为当前最核心风险。根据价值陷阱规则，仓位上限强制降至5%（无豁免），不得以净利润仍在增长为由豁免。",
+    "⚠️ 净息差（NIM）趋势UNA，但全行业NIM持续承压，招行作为零售银行龙头亦面临息差收窄压力。",
+    "⚠️ 营收连续两年基本零增长（2024年-0.48%，2025年+0.01%），缺乏内生增长动力。",
+    "⚠️ 经济周期下行风险：银行属于强周期行业，不良贷款率和信用成本在经济下行期可能上升。",
+    "⚠️ 银行专属字段（不良率、拨备覆盖率、核心一级资本充足率）UNA，数据完整性不足，影响硬门槛完全验证。"
+  ]
+}
